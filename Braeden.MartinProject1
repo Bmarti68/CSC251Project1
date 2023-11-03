@@ -1,0 +1,133 @@
+public class Policy {
+    private int policyNumber;
+    private String providerName;
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String smokingStatus;
+    private double heightInInches;
+    private double weightInPounds;
+
+    // 
+    public Policy() {
+        policyNumber = 0;
+        providerName = "Default Provider";
+        firstName = "John";
+        lastName = "Doe";
+        age = 30;
+        smokingStatus = "non-smoker";
+        heightInInches = 68.0; // Default height
+        weightInPounds = 150.0; // Default weight
+    }
+
+    // Constructor
+    public Policy(int policyNumber, String providerName, String firstName, String lastName,
+                 int age, String smokingStatus, double heightInInches, double weightInPounds) {
+        this.policyNumber = policyNumber;
+        this.providerName = providerName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.smokingStatus = smokingStatus;
+        this.heightInInches = heightInInches;
+        this.weightInPounds = weightInPounds;
+    }
+
+    // Getters and setters
+    public int getPolicyNumber() {
+        return policyNumber;
+    }
+
+    public void setPolicyNumber(int policyNumber) {
+        this.policyNumber = policyNumber;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getSmokingStatus() {
+        return smokingStatus;
+    }
+
+    public void setSmokingStatus(String smokingStatus) {
+        this.smokingStatus = smokingStatus;
+    }
+
+    public double getHeightInInches() {
+        return heightInInches;
+    }
+
+    public void setHeightInInches(double heightInInches) {
+        this.heightInInches = heightInInches;
+    }
+
+    public double getWeightInPounds() {
+        return weightInPounds;
+    }
+
+    public void setWeightInPounds(double weightInPounds) {
+        this.weightInPounds = weightInPounds;
+    }
+
+    // return BMI
+    public double calculateBMI() {
+        return (weightInPounds * 703) / (heightInInches * heightInInches);
+    }
+
+    // price of insurance policy
+    public double calculatePolicyPrice() {
+        double baseFee = 600.0;
+        double additionalFee = 0.0;
+
+        if (age > 50) {
+            additionalFee += 75.0;
+        }
+
+        if (smokingStatus.equals("smoker")) {
+            additionalFee += 100.0;
+        }
+
+        double bmi = calculateBMI();
+        if (bmi > 35) {
+            additionalFee += (bmi - 35) * 20.0;
+        }
+
+        return baseFee + additionalFee;
+    }
+
+    public static void main(String[] args) {
+        // usage:
+        Policy policy = new Policy(12345, "ABC Insurance", "Alice", "Smith", 45, "non-smoker", 64.0, 150.0);
+        System.out.println("BMI: " + policy.calculateBMI());
+        System.out.println("Policy Price: $" + policy.calculatePolicyPrice());
+    }
+}
