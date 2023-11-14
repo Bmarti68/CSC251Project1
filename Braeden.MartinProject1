@@ -1,133 +1,60 @@
-public class Policy {
-    private int policyNumber;
-    private String providerName;
-    private String firstName;
-    private String lastName;
-    private int age;
-    private String smokingStatus;
-    private double heightInInches;
-    private double weightInPounds;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-    // 
-    public Policy() {
-        policyNumber = 0;
-        providerName = "Default Provider";
-        firstName = "John";
-        lastName = "Doe";
-        age = 30;
-        smokingStatus = "non-smoker";
-        heightInInches = 68.0; // Default height
-        weightInPounds = 150.0; // Default weight
-    }
-
-    // Constructor
-    public Policy(int policyNumber, String providerName, String firstName, String lastName,
-                 int age, String smokingStatus, double heightInInches, double weightInPounds) {
-        this.policyNumber = policyNumber;
-        this.providerName = providerName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.smokingStatus = smokingStatus;
-        this.heightInInches = heightInInches;
-        this.weightInPounds = weightInPounds;
-    }
-
-    // Getters and setters
-    public int getPolicyNumber() {
-        return policyNumber;
-    }
-
-    public void setPolicyNumber(int policyNumber) {
-        this.policyNumber = policyNumber;
-    }
-
-    public String getProviderName() {
-        return providerName;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getSmokingStatus() {
-        return smokingStatus;
-    }
-
-    public void setSmokingStatus(String smokingStatus) {
-        this.smokingStatus = smokingStatus;
-    }
-
-    public double getHeightInInches() {
-        return heightInInches;
-    }
-
-    public void setHeightInInches(double heightInInches) {
-        this.heightInInches = heightInInches;
-    }
-
-    public double getWeightInPounds() {
-        return weightInPounds;
-    }
-
-    public void setWeightInPounds(double weightInPounds) {
-        this.weightInPounds = weightInPounds;
-    }
-
-    // return BMI
-    public double calculateBMI() {
-        return (weightInPounds * 703) / (heightInInches * heightInInches);
-    }
-
-    // price of insurance policy
-    public double calculatePolicyPrice() {
-        double baseFee = 600.0;
-        double additionalFee = 0.0;
-
-        if (age > 50) {
-            additionalFee += 75.0;
-        }
-
-        if (smokingStatus.equals("smoker")) {
-            additionalFee += 100.0;
-        }
-
-        double bmi = calculateBMI();
-        if (bmi > 35) {
-            additionalFee += (bmi - 35) * 20.0;
-        }
-
-        return baseFee + additionalFee;
-    }
+public class MuseumMembershipDemo {
 
     public static void main(String[] args) {
-        // usage:
-        Policy policy = new Policy(12345, "ABC Insurance", "Alice", "Smith", 45, "non-smoker", 64.0, 150.0);
-        System.out.println("BMI: " + policy.calculateBMI());
-        System.out.println("Policy Price: $" + policy.calculatePolicyPrice());
+        // Existing code...
+
+        // Load policy information from file
+        ArrayList<Policy> policies = loadPoliciesFromFile("CSC251Project/PolicyInformation.txt");
+
+        // Display information for each policy
+        System.out.println("\nPolicy Information:");
+        for (Policy policy : policies) {
+            System.out.println("Policy Number: " + policy.getPolicyNumber());
+            System.out.println("Provider Name: " + policy.getProviderName());
+            // Display other policy information similarly
+            System.out.println();
+        }
+
+        // Display the number of smokers and non-smokers
+        int smokersCount = countSmokers(policies);
+        int nonSmokersCount = policies.size() - smokersCount;
+
+        System.out.println("Number of Smokers: " + smokersCount);
+        System.out.println("Number of Non-Smokers: " + nonSmokersCount);
+    }
+
+    // Method to load policies from a file
+    private static ArrayList<Policy> loadPoliciesFromFile(String filePath) {
+        ArrayList<Policy> policies = new ArrayList<>();
+        try {
+            Scanner fileScanner = new Scanner(new File(filePath));
+            while (fileScanner.hasNext()) {
+                // Read data from file and create Policy objects
+                int policyNumber = fileScanner.nextInt();
+                // Read other policy information similarly
+                Policy policy = new Policy(policyNumber, /* Other parameters */);
+                policies.add(policy);
+            }
+            fileScanner.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        }
+        return policies;
+    }
+
+    // Method to count the number of smokers in the policies
+    private static int countSmokers(ArrayList<Policy> policies) {
+        int count = 0;
+        for (Policy policy : policies) {
+            if ("smoker".equalsIgnoreCase(policy.getSmokingStatus())) {
+                count++;
+            }
+        }
+        return count;
     }
 }
